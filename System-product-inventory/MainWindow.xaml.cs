@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System_product_inventory.Pages;
 
 namespace System_product_inventory
 {
@@ -23,6 +24,16 @@ namespace System_product_inventory
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ProductsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ProductPage());
+        }
+
+        private void StatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new StatisticsPage());
         }
     }
 }

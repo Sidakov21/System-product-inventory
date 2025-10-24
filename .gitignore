@@ -361,3 +361,16 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/System-product-inventory/App.config
+/System-product-inventory/Category.cs
+/System-product-inventory/Model1.Context.cs
+/System-product-inventory/Model1.Context.tt
+/System-product-inventory/Model1.cs
+/System-product-inventory/Model1.Designer.cs
+/System-product-inventory/Model1.edmx
+/System-product-inventory/Model1.edmx.diagram
+/System-product-inventory/Model1.tt
+/System-product-inventory/packages.config
+/System-product-inventory/Product.cs
+/System-product-inventory/StatisticsView.cs
+/System-product-inventory/System-product-inventory.csproj
