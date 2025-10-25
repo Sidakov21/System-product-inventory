@@ -116,5 +116,44 @@ namespace System_product_inventory.Pages
             // После закрытия окна обновляем таблицу
             LoadProducts();
         }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Проверяем, выбран ли элемент
+            if (ProductsGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Выберите товар для удаления.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Подтверждение удаления
+            var result = MessageBox.Show("Вы уверены, что хотите удалить выбранный товар?", "Подтверждение удаления",MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            // Получаем ID выбранного товара
+            dynamic selected = ProductsGrid.SelectedItem;
+            int productId = selected.Id;
+
+            using (var db = new Entities())
+            {
+                var product = db.Product.FirstOrDefault(p => p.Id == productId);
+                if (product != null)
+                {
+                    db.Product.Remove(product);
+                    db.SaveChanges();
+
+                    MessageBox.Show("Товар успешно удалён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Товар не найден в базе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            // Обновляем таблицу
+            LoadProducts();
+        }
     }
 }
