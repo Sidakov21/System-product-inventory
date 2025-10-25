@@ -24,6 +24,7 @@ namespace System_product_inventory.Pages
         {
             InitializeComponent();
             LoadProducts();
+            UpdateSummary();
         }
 
         private void LoadProducts()
@@ -42,6 +43,8 @@ namespace System_product_inventory.Pages
                 // Привязываем к DataGrid
                 StatistycsGrid.ItemsSource = statistyc;
             }
+
+            UpdateSummary();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -61,6 +64,26 @@ namespace System_product_inventory.Pages
                 // Привязываем к DataGrid
                 StatistycsGrid.ItemsSource = statistyc;
             }
+
+            UpdateSummary();
         }
+
+        private void UpdateSummary()
+        {
+            decimal totalSum = 0;
+            decimal averagePrice = 0;
+
+            var items = StatistycsGrid.ItemsSource as IEnumerable<dynamic>;
+
+            if (items != null && items.Any())
+            {
+                totalSum = items.Sum(i => (decimal)i.TotalValue);
+                averagePrice = items.Average(i => (decimal)i.AveragePrice);
+            }
+
+            TotalSumText.Text = $"{totalSum:N2} ₽";
+            AveragePriceText.Text = $"{averagePrice:N2} ₽";
+        }
+
     }
 }
