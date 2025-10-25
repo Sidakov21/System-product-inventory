@@ -20,7 +20,7 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <TextBox x:Name="SearchBox" Width="250" Height="30" Margin="0,0,10,0" VerticalContentAlignment="Center"/>
 
-            <Button x:Name="SearchButton" Content="Поиск" Width="100" Height="30" Margin="0,0,20,0"/>
+            <Button x:Name="SearchButton" Content="Поиск" Width="100" Height="30" Margin="0,0,20,0" Click="SearchButton_Click"/>
 
             <Button x:Name="AddButton" Content="Добавить" Width="100" Height="30" Margin="0,0,10,0" Background="#4CAF50" Foreground="White" Click="AddButton_Click"/>
             <Button x:Name="EditButton" Content="Редактировать" Width="120" Height="30" Margin="0,0,10,0" Background="#2196F3" Foreground="White" Click="EditButton_Click"/>

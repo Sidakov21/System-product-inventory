@@ -155,5 +155,32 @@ namespace System_product_inventory.Pages
             // Обновляем таблицу
             LoadProducts();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text.Trim().ToLower();
+
+            using (var db = new Entities())
+            {
+                var products = db.Product
+                    .Select(p => new
+                    {
+                        p.Id,
+                        p.Name,
+                        CategoryName = db.Category
+                                         .Where(c => c.Id == p.CategoryId)
+                                         .Select(c => c.Name)
+                                         .FirstOrDefault() ?? "NULL",
+                        p.Quantity,
+                        p.Price
+                    })
+                    .Where(p =>
+                        p.Name.ToLower().Contains(searchText) ||
+                        p.CategoryName.ToLower().Contains(searchText))
+                    .ToList();
+
+                ProductsGrid.ItemsSource = products;
+            }
+        }
     }
 }

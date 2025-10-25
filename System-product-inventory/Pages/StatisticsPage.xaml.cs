@@ -24,27 +24,66 @@ namespace System_product_inventory.Pages
         {
             InitializeComponent();
             LoadProducts();
+            UpdateSummary();
         }
 
         private void LoadProducts()
         {
             using (var db = new Entities())
             {
-                var products = db.Product.Select(p => new
+                var statistyc = db.StatisticsView.Select(sv => new
                 {
-                    p.Id,
-                    p.Name,
-                    CategoryName = db.Category
-                                     .Where(c => c.Id == p.CategoryId)
-                                     .Select(c => c.Name)
-                                     .FirstOrDefault() ?? "NULL",
-                    p.Quantity,
-                    p.Price
+                    sv.ID,
+                    sv.Name,
+                    sv.TotalProducts,
+                    sv.AveragePrice,
+                    sv.TotalValue
                 }).ToList();
 
                 // Привязываем к DataGrid
-                ProductsGrid.ItemsSource = products;
+                StatistycsGrid.ItemsSource = statistyc;
             }
+
+            UpdateSummary();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text.Trim().ToLower();
+
+            using (var db = new Entities())
+            {
+                var statistyc = db.StatisticsView.Select(sv => new
+                {
+                    sv.ID,
+                    sv.Name,
+                    sv.TotalProducts,
+                    sv.AveragePrice,
+                    sv.TotalValue
+                }).Where(p => p.Name.ToLower().Contains(searchText)).ToList();
+                // Привязываем к DataGrid
+                StatistycsGrid.ItemsSource = statistyc;
+            }
+
+            UpdateSummary();
+        }
+
+        private void UpdateSummary()
+        {
+            decimal totalSum = 0;
+            decimal averagePrice = 0;
+
+            var items = StatistycsGrid.ItemsSource as IEnumerable<dynamic>;
+
+            if (items != null && items.Any())
+            {
+                totalSum = items.Sum(i => (decimal)i.TotalValue);
+                averagePrice = items.Average(i => (decimal)i.AveragePrice);
+            }
+
+            TotalSumText.Text = $"{totalSum:N2} ₽";
+            AveragePriceText.Text = $"{averagePrice:N2} ₽";
+        }
+
     }
 }
