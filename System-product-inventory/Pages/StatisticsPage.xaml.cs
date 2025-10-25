@@ -23,6 +23,28 @@ namespace System_product_inventory.Pages
         public StatisticsPage()
         {
             InitializeComponent();
+            LoadProducts();
+        }
+
+        private void LoadProducts()
+        {
+            using (var db = new Entities())
+            {
+                var products = db.Product.Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    CategoryName = db.Category
+                                     .Where(c => c.Id == p.CategoryId)
+                                     .Select(c => c.Name)
+                                     .FirstOrDefault() ?? "NULL",
+                    p.Quantity,
+                    p.Price
+                }).ToList();
+
+                // Привязываем к DataGrid
+                ProductsGrid.ItemsSource = products;
+            }
         }
     }
 }
