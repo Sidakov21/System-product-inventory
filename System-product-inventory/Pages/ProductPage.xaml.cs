@@ -78,7 +78,43 @@ namespace System_product_inventory.Pages
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = new ProductEditWindow();
+
+            // Проверяем, выбран ли элемент
+            if (ProductsGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Выберите товар для редактирования.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Получаем выбранный товар
+            dynamic selected = ProductsGrid.SelectedItem;
+            int productId = selected.Id;
+
+            using (var db = new Entities())
+            {
+                var product = db.Product.FirstOrDefault(p => p.Id == productId);
+                if (product == null)
+                {
+                    MessageBox.Show("Товар не найден в базе.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var editWindow = new ProductEditWindow(product);
+
+                if (editWindow.ShowDialog() == true)
+                {
+                    // Обновляем данные товара
+                    product.Name = editWindow.ProductName;
+                    product.Quantity = editWindow.Quantity;
+                    product.Price = editWindow.Price;
+                    product.CategoryId = editWindow.CategoryId;
+
+                    db.SaveChanges();
+                }
+            }
+
+            // После закрытия окна обновляем таблицу
+            LoadProducts();
         }
     }
 }
