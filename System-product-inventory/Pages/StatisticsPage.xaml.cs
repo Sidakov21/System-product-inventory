@@ -30,20 +30,36 @@ namespace System_product_inventory.Pages
         {
             using (var db = new Entities())
             {
-                var products = db.Product.Select(p => new
+                var statistyc = db.StatisticsView.Select(sv => new
                 {
-                    p.Id,
-                    p.Name,
-                    CategoryName = db.Category
-                                     .Where(c => c.Id == p.CategoryId)
-                                     .Select(c => c.Name)
-                                     .FirstOrDefault() ?? "NULL",
-                    p.Quantity,
-                    p.Price
+                    sv.ID,
+                    sv.Name,
+                    sv.TotalProducts,
+                    sv.AveragePrice,
+                    sv.TotalValue
                 }).ToList();
 
                 // Привязываем к DataGrid
-                ProductsGrid.ItemsSource = products;
+                StatistycsGrid.ItemsSource = statistyc;
+            }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text.Trim().ToLower();
+
+            using (var db = new Entities())
+            {
+                var statistyc = db.StatisticsView.Select(sv => new
+                {
+                    sv.ID,
+                    sv.Name,
+                    sv.TotalProducts,
+                    sv.AveragePrice,
+                    sv.TotalValue
+                }).Where(p => p.Name.ToLower().Contains(searchText)).ToList();
+                // Привязываем к DataGrid
+                StatistycsGrid.ItemsSource = statistyc;
             }
         }
     }

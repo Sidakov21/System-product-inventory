@@ -18,11 +18,11 @@
         <!-- Панель управления -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <TextBox x:Name="SearchBox" Width="250" Height="30" Margin="0,0,10,0" VerticalContentAlignment="Center"/>
-            <Button x:Name="SearchButton" Content="Поиск" Width="100" Height="30" Margin="0,0,20,0"/>
+            <Button x:Name="SearchButton" Content="Поиск" Width="100" Height="30" Margin="0,0,20,0" Click="SearchButton_Click"/>
         </StackPanel>
 
         <!-- Таблица товаров -->
-        <DataGrid x:Name="ProductsGrid"
+        <DataGrid x:Name="StatistycsGrid"
               Grid.Row="1"
               AutoGenerateColumns="False"
               IsReadOnly="False"
@@ -30,13 +30,13 @@
               HeadersVisibility="Column"
               CanUserAddRows="False"
               AlternatingRowBackground="#f2f2f2"
-              RowHeight="35">
+              RowHeight="35" VerticalScrollBarVisibility="Visible">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Категория" Binding="{Binding Category}" Width="*"/>
-                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" Width="100"/>
-                <DataGridTextColumn Header="Цена (₽)" Binding="{Binding Price}" Width="100"/>
+                <DataGridTextColumn Header="Количесвто товаров" Binding="{Binding TotalProducts}" Width="*"/>
+                <DataGridTextColumn Header="Средняя цена" Binding="{Binding AveragePrice}" Width="100"/>
+                <DataGridTextColumn Header="Общая цена (₽)" Binding="{Binding TotalValue}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
 
